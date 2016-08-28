@@ -16,39 +16,39 @@ socket.on('emit_from_server', function(data) {
 });
 
 
-//i˜H•ÏXƒƒ\ƒbƒh
+//é€²è·¯å¤‰æ›´ãƒ¡ã‚½ãƒƒãƒ‰
 socket.emit('straight', pwm.write(straight));
 socket.emit('righte', pwm.write(curveRight));
 socket.emit('left', pwm.write(curveLeft));
 
 
 
-//ƒ‰ƒCƒg“_“”
-var isOn = false;   // “_“”‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
-var count = 0;      // “_“”‚µ‚½‰ñ”
-var maxCount = 10;  // “_–Å‚³‚¹‚é‰ñ”
+//ãƒ©ã‚¤ãƒˆç‚¹ç¯
+var isOn = false;   // ç‚¹ç¯ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹
+var count = 0;      // ç‚¹ç¯ã—ãŸå›æ•°
+var maxCount = 10;  // ç‚¹æ»…ã•ã›ã‚‹å›æ•°
 
-// 8”Ô‚ÌGPIOƒsƒ“‚ğo—Í‚Æ‚µ‚Ä“o˜^
+// 8ç•ªã®GPIOãƒ”ãƒ³ã‚’å‡ºåŠ›ã¨ã—ã¦ç™»éŒ²
 fs.writeFileSync('/sys/class/gpio/export', '8');
 fs.writeFileSync('/sys/class/gpio/gpio8/direction', 'out');
 
-// 1•b–ˆ‚ÉƒIƒ“‚ÆƒIƒt‚ğØ‚è‘Ö‚¦‚é
+// 1ç§’æ¯ã«ã‚ªãƒ³ã¨ã‚ªãƒ•ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
 var blink = setInterval(function() {
 
   if(count == maxCount) {
-    // GPIOƒsƒ“‚ğŠJ•ú
+    // GPIOãƒ”ãƒ³ã‚’é–‹æ”¾
     fs.writeFileSync('/sys/class/gpio/unexport', '8');
-    // ƒCƒ“ƒ^[ƒoƒ‹‚ğI—¹
+    // ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«ã‚’çµ‚äº†
     clearInterval(blink);
     return;
   }
 
   if(isOn) {
-    // LED‚ğƒIƒt
+    // LEDã‚’ã‚ªãƒ•
     fs.writeFileSync('/sys/class/gpio/gpio8/value', '0');
     isOn = false;
   } else {
-    // LED‚ğƒIƒ“
+    // LEDã‚’ã‚ªãƒ³
     fs.writeFileSync('/sys/class/gpio/gpio8/value', '1');
     isOn = true;
     count++;
